@@ -3,7 +3,7 @@
 function dbConnect() 
 {
    $db_host = "localhost";
-   $db_name = "mystore";
+   $db_name = "OnlineStore";
    $dbcnx = mysqli_connect($db_host, "root", "root") or die("The database site '$db_host' is not reachable.");
    if (!mysqli_select_db($dbcnx, $db_name)) 
    {
