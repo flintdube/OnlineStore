@@ -15,7 +15,9 @@ if (isset($_POST['login']))
 
     try {
         $dbcnx = dbConnect();
-        $query = mysqli_query($dbcnx, "select distinct * from user_login where username = '$user' and password = '$pass'");
+        $sql = "select distinct l.username, l.password, ut.description from login l join user_type ut on ut.id = l.user_type_id where l.username = '$user' and l.password = '$pass'";
+        $query = mysqli_query($dbcnx, $sql);
+        
         if (!$query) 
         {
             alertError('A daabase error occured in processing your request.');
@@ -29,7 +31,7 @@ if (isset($_POST['login']))
 
         $username = $result['username'];
         $password = $result['password'];
-        $userType = $result['user_type'];
+        $userType = $result['description'];
 
        if ($user == $username && $pass == $password) 
        {
@@ -89,7 +91,7 @@ if (isset($_POST['login']))
                 <button type="submit" class="btn btn-primary" name="login" id="login">Login</button>
            </div>
            <div class="mb-3 col-4 mx-auto">
-                <p>New to OnlineStore? <a class="text-decoration-none" href="user_account/register_user.php">Create account</a></p>
+                <p>New to OnlineStore? <a class="text-decoration-none" href="registration/register_user.php">Create account</a></p>
             </div>
        </div>
    </form>    
