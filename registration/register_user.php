@@ -4,7 +4,7 @@ include('../common/common.php');
 
 if (isset($_POST['register'])) 
 {
-    $user_type        = "user";
+    $user_type_id        = 2;
     $firstname        = $_POST['firstname'];
     $lastname         = $_POST['lastname'];
     $email            = $_POST['email'];
@@ -29,11 +29,11 @@ if (isset($_POST['register']))
     try{
        $dbcnx = dbConnect();
        $sql = sprintf(
-       "insert into user_login 
-               (user_type, firstname, lastname, username, password, email, mobile_number) 
-        values ('$user_type','$firstname ','$lastname ','$firstname','$password','$email','$mobile_number');");
+       "insert into login 
+               (user_type_id, username, firstname, lastname, email, mobile, password) 
+        values ('$user_type_id','$firstname ','$firstname','$lastname','$email','$mobile_number','$password');");
 
-       $result = mysqli_query($dbcnx, $sql) or die(mysqli_error($conn));
+       $result = mysqli_query($dbcnx, $sql) or die(mysqli_error($dbcnx));
 
        if($result)
        {
@@ -68,31 +68,31 @@ if (isset($_POST['register']))
         <h4><label for="login">Register</label></h4>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="firstname" type="text" id="firstname" size="40">
+        <input class="form-control" name="firstname" type="text" id="firstname" size="40" required>
         <label for="firstname">Firstname</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="lastname" type="text" id="lastname" size="40">
+        <input class="form-control" name="lastname" type="text" id="lastname" size="40" required>
         <label for="lastname">Lastname</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="email" type="text" id="email" size="40">
+        <input class="form-control" name="email" type="email" id="email" size="40" required>
         <label for="email">Email</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="confirm_email" type="text" id="confirm_email" size="40">
+        <input class="form-control" name="confirm_email" type="email" id="confirm_email" size="40" required>
         <label for="confirm_email">Confirm Email</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="password" type="password" id="password" size="40">
+        <input class="form-control" name="password" type="password" id="password" size="40" required>
         <label for="password">Password</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="confirm_password" type="password" id="confirm_password" size="40">
+        <input class="form-control" name="confirm_password" type="password" id="confirm_password" size="40" required>
         <label for="confirm_password">Confirm Password</label>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
-        <input class="form-control" name="mobile_number" type="text" id="mobile_number" size="40">
+        <input class="form-control" name="mobile_number" type="text" id="mobile_number" size="40" required>
         <label for="mobile_number">Mobile Number</label>
     </div>
     <div class="d-grid gap-2 col-2 mx-auto  mb-3 ">
