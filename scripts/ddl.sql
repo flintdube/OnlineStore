@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS OnlineStore;
 CREATE DATABASE OnlineStore;
 USE OnlineStore;
 
@@ -24,6 +25,7 @@ CREATE TABLE login (
   last_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   end_date TIMESTAMP,
+  INDEX user_type_index (user_type_id),
   FOREIGN KEY (user_type_id)
     REFERENCES user_type(id)
     ON UPDATE CASCADE

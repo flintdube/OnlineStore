@@ -13,7 +13,7 @@ if(isset($_POST['reset_password']))
   }
   
   $dbcnx = dbConnect();
-  $select_query = mysqli_query($dbcnx, "select distinct * from user_login where email = '$email'");
+  $select_query = mysqli_query($dbcnx, "select distinct * from login where email = '$email'");
   if (!$select_query) 
   {
       alertError('A daabase error occured in processing your request.');
@@ -24,14 +24,11 @@ if(isset($_POST['reset_password']))
   $user_email = $select_result['email'];
 
   if ($email == $user_email) {
+    // alertSuccess('Email address is registered.\n'.
+    //              'OnlineStore will send new one time password to your email.');
     //generate random password and send email
      $generated_Password = "12345";
-    //if sent, then update password
-    $update_query = mysqli_query($dbcnx, "update user_login set password = '$generated_Password' where id = '$user_id' and email = '$user_email'");
-    if (!$update_query) 
-    {
-      alertError('A daabase error occured in processing your request.');
-    }
+
 
     $to = $user_email;
     $subject = "OnlineStore password reset";
@@ -45,8 +42,14 @@ if(isset($_POST['reset_password']))
 
     if (mail($to, $subject, $message, $header))
     {
-        alertSuccess('Password reset successful.\n'.
-                       'A new password has been sent to '. $user_email);
+        //if sent, then update password
+        $update_query = mysqli_query($dbcnx, "update login set password = '$generated_Password' where id = '$user_id' and email = '$user_email'");
+        if ($update_query) 
+        {
+          simpleAlertSuccess('Password reset successful.\n'.
+                             'A new password has been sent to '. $user_email); 
+        } 
+
     } 
     else 
     {
@@ -77,7 +80,7 @@ if(isset($_POST['reset_password']))
                 <h4><label for="login">Reset your password</label></h4>
            </div>
            <div class="form-floating mb-3 col-4 mx-auto">
-                <input class="form-control" name="email" type="text" id="email" size="40">
+                <input class="form-control" name="email" type="text" id="email" size="40" required>
                 <label for="username">Please enter your registered email address</label>
            </div>
            <div class="d-grid gap-2 col-2 mx-auto  mb-3 ">
