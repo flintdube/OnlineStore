@@ -1,6 +1,6 @@
 <?php
-include('../data_source/db_connection.php');
-include('../common/common.php');
+include('data_source/db_connection.php');
+include('common/common.php');
 
 if (isset($_POST['register'])) 
 {
@@ -9,7 +9,7 @@ if (isset($_POST['register']))
     $lastname         = $_POST['lastname'];
     $email            = $_POST['email'];
     $confirm_email    = $_POST['confirm_email'];
-    $password         = $_POST['password'];
+    $password         = md5($_POST['password']);
     $confirm_password = $_POST['confirm_password'];
     $mobile_number    = $_POST['mobile_number'];
 
@@ -59,13 +59,15 @@ if (isset($_POST['register']))
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap" rel="stylesheet">  
+  <link rel="stylesheet" href="./css/common.css" type="text/css" media="screen"/>
   <title>Register - OnlineStore</title>
 </head>
 <body>
-<form method="post">
-  <div class="container">
+<form method="post" action="<?=$_SERVER['PHP_SELF']?>">
     <div class="form-floating mb-3 col-4 mx-auto">
-        <h4><label for="login">Register</label></h4>
+       <h4> <label for="login">Register here</label></h4>
     </div>
     <div class="form-floating mb-3 col-4 mx-auto">
         <input class="form-control" name="firstname" type="text" id="firstname" size="40" required>
@@ -95,13 +97,13 @@ if (isset($_POST['register']))
         <input class="form-control" name="mobile_number" type="text" id="mobile_number" size="40" required>
         <label for="mobile_number">Mobile Number</label>
     </div>
+	
     <div class="d-grid gap-2 col-2 mx-auto  mb-3 ">
-        <button type="submit" class="btn btn-primary" name="register" id="button">Register Now</button>
+        <button type="submit" class="btn" name="register" >Register Now</button>
     </div>
   <div class="mb-3 col-4 mx-auto">
       <p>By clicking the Register Now, I agree to OnlineStore.com <a class="text-decoration-none" href="../resources/documents/legal.php">Terms and Conditions</a></button>
   </div>
-  </div>
-</form>
+	</form>
 </body>
 </html>
