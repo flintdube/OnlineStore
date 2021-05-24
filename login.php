@@ -73,6 +73,9 @@ if (isset($_POST['login']))
     <title>Login</title>
 </head>
 <body>
+<?php
+include_once('template_header.php');
+?>
    <form method="post" action="<?=$_SERVER['PHP_SELF']?>">
        <div class="container">
            <div class="form-floating mb-3 col-4 mx-auto">
@@ -96,6 +99,7 @@ if (isset($_POST['login']))
                 <p>New to OnlineStore? <a class="text-decoration-none" href="registration/register_user.php">Create account</a></p>
             </div>
        </div>
-   </form>    
+   </form> 
+
 </body>
 </html>
