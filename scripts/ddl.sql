@@ -68,9 +68,32 @@ CREATE TABLE shipping_details (
     ON DELETE CASCADE
 );
 
+
+CREATE TABLE category (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category_id INT,
+  name VARCHAR(255) NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  price FLOAT(16) NOT NULL,
+  INDEX category_index (category_id),
+  FOREIGN KEY (category_id)
+   REFERENCES category(id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+  );
+
 DESCRIBE login;
 DESCRIBE login_status;
 DESCRIBE shipping_details;
 DESCRIBE user_login_history;
 DESCRIBE user_type;
+DESCRIBE category;
+DESCRIBE products;
 
+
+  

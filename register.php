@@ -65,6 +65,10 @@ if (isset($_POST['register']))
   <title>Register - OnlineStore</title>
 </head>
 <body>
+
+<?php
+include_once('template_header.php');
+?>
 <form method="post" action="<?=$_SERVER['PHP_SELF']?>">
     <div class="form-floating mb-3 col-4 mx-auto">
        <h4> <label for="login">Register here</label></h4>
@@ -105,5 +109,6 @@ if (isset($_POST['register']))
       <p>By clicking the Register Now, I agree to OnlineStore.com <a class="text-decoration-none" href="../resources/documents/legal.php">Terms and Conditions</a></button>
   </div>
 	</form>
-</body>
+
+ </body>
 </html>

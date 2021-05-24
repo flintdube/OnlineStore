@@ -1,4 +1,9 @@
 <?php
+include_once('template_header.php');
+?>
+
+
+<?php
 $message_sent= false;
 if(isset($_POST['email']) && $_POST['email']!= ''){
 	
@@ -58,6 +63,7 @@ else:
   <form action="contact.php" method="POST" class="form">
            <div class="form-floating mb-3 col-4 mx-auto">
                 <h4><label for="login">Contact us</label></h4>
+				<p> Feel free to contact us during business hours.</p>
            </div>
       <div class="form-floating mb-3 col-4 mx-auto">
         <input class="form-control" name="firstname" type="text" id="firstname" size="40" required>
