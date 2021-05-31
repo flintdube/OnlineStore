@@ -68,24 +68,49 @@ CREATE TABLE shipping_details (
     ON DELETE CASCADE
 );
 
-
 CREATE TABLE category (
   id INT AUTO_INCREMENT PRIMARY KEY,
   description VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   category_id INT,
-  name VARCHAR(255) NOT NULL,
-  image VARCHAR(255) NOT NULL,
-  price FLOAT(16) NOT NULL,
+  title VARCHAR(255),
+  description TEXT,
+  image VARCHAR(255),
+  price DECIMAL(10,2),
+  quantity INT,
   INDEX category_index (category_id),
   FOREIGN KEY (category_id)
-   REFERENCES category(id)
+    REFERENCES category(id)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
-  );
+);
+
+-- CREATE TABLE orders (
+--   id INT AUTO_INCREMENT PRIMARY KEY,
+--   product_id INT,
+--   user_id INT,
+--   address_id INT,
+--   quantity INT,
+--   price DECIMAL(10,2),
+--   INDEX product_index (product_id),
+--   INDEX user_index (user_id),
+--   INDEX address_index (address_id),
+--   FOREIGN KEY (product_id)
+--     REFERENCES products(id)
+--     ON UPDATE CASCADE
+--     ON DELETE CASCADE
+--     FOREIGN KEY (user_id)
+--     REFERENCES login(id)
+--     ON UPDATE CASCADE
+--     ON DELETE CASCADE
+--     FOREIGN KEY (address_id)
+--     REFERENCES shipping_details(id)
+--     ON UPDATE CASCADE
+--     ON DELETE CASCADE
+-- );
 
 DESCRIBE login;
 DESCRIBE login_status;
@@ -94,6 +119,4 @@ DESCRIBE user_login_history;
 DESCRIBE user_type;
 DESCRIBE category;
 DESCRIBE products;
-
-
-  
+-- DESCRIBE orders;

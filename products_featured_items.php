@@ -1,122 +1,73 @@
 <?php
-session_start();
-$product_ids = array();
-//session_destroy();
-
-//check if Add to cart button has been submitted
-if(filter_input(INPUT_POST, 'add_to_cart')){
-   if(isset($_SESSION['shopping_cart'])){
-    //Keep track of how many products are in shopping cart
-	$count = count($_SESSION['shopping_cart']);
-	
-	//create sequential array for matching array keys to products id's
-	$product_ids = array_column($_SESSION['shopping_cart'], 'id');
-	
-	if (!in_array(filter_input(INPUT_GET, 'id'), $product_ids)){
-		$_SESSION['shopping_cart'][$count] = array
-		(
-		   'id' => filter_input(INPUT_GET, 'id'),
-           'name' => filter_input(INPUT_POST, 'name'),
-           'price' => filter_input(INPUT_POST, 'price'),
-           'quantity' => filter_input(INPUT_POST, 'quantity')
-   );
-	}
-	else{//product already exists, increase quantity
-	     //match array key to id of the product being added to the cart
-		for ($i = 0; $i < count($product_ids); $i++){
-			if ($product_ids[$i] == filter_input(INPUT_GET, 'id')){
-				//add item quantity to the existing product in the array
-				$_SESSION['shopping_cart'][$i]['quantity'] += filter_input(INPUT_POST, 'quantity');
-			}
-		}
-	}
-}
-else{//if shopping cart does not exist, create first product with array key 0
-   //create array using submitted form data, start from key 0 and fill it with values
-      $_SESSION['shopping_cart'][0] = array
-(
-   'id' => filter_input(INPUT_GET, 'id'),
-   'name' => filter_input(INPUT_POST, 'name'),
-   'price' => filter_input(INPUT_POST, 'price'),
-   'quantity' => filter_input(INPUT_POST, 'quantity')
-   );
-   }
- }
- 
- if(filter_input(INPUT_GET, 'action') == 'delete'){
-	 //loop through all products in the shopping cart until it matches with GET id variables
-	 foreach($_SESSION['shopping_cart'] as $key => $product){
-		 if ($product['id'] == filter_input(INPUT_GET, 'id')){
-			 //remove product from the shoppin cart when it matches with the GET id
-			unset($_SESSION['shopping_cart'][$key]); 
-		 }
-	 }
-	 //reset session array keys so they match with $product_ids numeric ids
-	 $_SESSION['shopping_cart'] = array_values($_SESSION['shopping_cart']);
- }
-	 
-//pre_r($_SESSION);
-
-function pre_r($array){
-	echo '<pre>';
-	print_r($array);
-	echo '</pre>';
-}
+include 'products/productsview.class.php';
 ?>
-
-
-
 <!DOCTYPE html>
- <html>
+<html lang="en">
+
 <head>
-<title>Shopping Cart</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="./css/common.css"/>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse our products</title>
+  <!--Bootstrap CDN-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <!--Font Awesome-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+  </script>
 </head>
+
 <body>
-<div class="container_cart">
-<?php
-
-$connect = mysqli_connect('localhost', 'root', 'root', 'onlinestore');
-$query = 'SELECT * FROM products WHERE category_id = 1';
-$result = mysqli_query($connect,$query);
-
-if ($result):
-   if(mysqli_num_rows($result)>0):
-        while($product = mysqli_fetch_assoc($result)):
-			//print_r($product);
- 
-?>
-<div class="col-sm-4 col-md-3">
-<form method="post" action="cart.php?action=add&id=<?php echo $product['id'];?>">
-<div class="products">
-<a href="cart.php"><img src="<?php echo $product['image']; ?>" class="img-responsive"/></a>
-<a href="cart.php"><h4 class="text-info"><?php echo $product['name']; ?></h4></a>
-<h4>R <?php echo $product['price']; ?></h4>
-<input type="text" name="quantity" class="form-control" value="1"/>
-<input type="hidden" name="name" value="<?php echo $product['name']; ?>"/>
-<input type="hidden" name="name" value="<?php echo $product['price']; ?>"/>
-<input type="submit" name="add_to_cart" style="margin-Top: 5px;" class="btn btn-info" value="Add to Cart"/>
-</div>
-</form>
-</div>
-<?php
-endwhile;
-endif;
-endif;
-?>
-
-<?php
-include_once('template_footer.php');
-?>
-</body>
-
+<?php include_once("template_header.php");?>
+  <div class="container">
+  
+     <main>
+     <div class="album py-5 bg-light">
+        <div class="container">
+        <div class="form-floating mb-3 mx-auto">
+            <h4>Featured Items</h4>
+       </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+            <?php 
+               $products = new ProductView();
+               $results = $products->showProduct(1);
+               if (!$results) {echo 'No products avalable at OnlineStore!';}
+               foreach($results as $result) :
+                  
+            ?>
+            <div class="col">
+              <div class="card shadow-sm">
+                  <a href="product_details.php?id=<?php echo $result['id'];?>">
+                    <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                         src="images/<?php echo $result['image'];?>" alt="Product-image">
+                  </a>
+                  <div class="card-body">
+                     <a href="product_details.php?id=<?php echo $result['id'];?>">
+                        <p class="card-text"><?php echo $result['title'].' R'.$result['price'];?></p>
+                     </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                       <!-- <div class="btn-group">
+                          <a class="btn btn-primary" href="product_details.php?id=<?php echo $result['id'];?>" role="button">Add to Cart</a>
+                       </div> -->
+                       <small
+                          class="text-muted"><?php echo $result["quantity"] == 0? "Out of stock": "Instock ".$result["quantity"];?>
+                       </small>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <?php 
+               endforeach; 
+            ?>
+          </div>
+        </div>
+     </div>
+     </main>
+  </div>
+  <div>
+      <?php include_once("template_footer.php");?>
+   </div>
+<body>
 </html>
-
-
-
-
-
-
-
-
